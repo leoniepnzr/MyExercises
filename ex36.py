@@ -24,7 +24,7 @@ def start():
             game_over("Learn to make decisions, dumbass!")
 
 def room():
-    print "\nAfter a rough night's sleep, you find yourself with nothing but a \nhuge bagpack and a swimsuit alone in a room with absolutely no idea what happened last night."
+    print "\nAfter a rough night, you find yourself waking up with nothing but a \nhuge bagpack and a swimsuit alone in a room with absolutely no idea what happened last night."
     print "You are surrounded by 6 lifeless bodies."
     print "There is a knife on your left, on your right you find a gun."
     print "Which one do you take?"
@@ -37,7 +37,8 @@ def room():
         elif choice == "gun":
             gun()
         else:
-            print "I will ask you one more time: knife or gun? This is a live-or-die-decision, take it serious!"
+            print "I will ask you one more time: knife or gun?"
+            print "This is a live-or-die-decision, take it serious!"
 
             choice = raw_input("> ")
 
@@ -46,7 +47,7 @@ def room():
             elif choice == "gun":
                 gun()
             else:
-                print "You think you're funny right? Follow the damn instructions, you idiot, or leave this game, goddamnit."
+                print "You think you're funny right? Follow the damn instructions, you idiot, or \nleave this game, goddamnit."
                 exit(0)
 
 def knife():
@@ -76,7 +77,8 @@ def gun():
             game_over("Go to bed and get rid of your hangover! You're boring.")
             exit(0)
         elif choice == "yes":
-            print "The party people already missed you. You re-enter the crazy weekend pool party with your loaded water gun. Have fun and keep partying!"
+            print "The party people already missed you!"
+            print "You re-enter the crazy weekend \npool party with your loaded water gun. Have fun and keep partying!"
             exit(0)
         else:
             print "It takes years for you to make a decision. Grow up!"
@@ -85,21 +87,22 @@ def gun():
 def pill():
     print "On your way to find an exit of this freaking maze, you get to meet a \ncreepy creature with women's clothes and an ugly face."
     print "The creature threatens you and wants you to give the pill to her unless \nyou want to pass the door behind her."
-    print "What do you do? \"give\" it the pill, beguile it with \"fake compliments\" or \"keep\" the pill for yourself?"
+    print "What do you do?"
+    print "\"give\" it the pill, beguile it with \"fake compliments\" or \"keep\" the pill for yourself?"
     creature_moved = False
 
     while True:
         choice = raw_input("> ")
 
         if choice == "give":
-            game_over("You die of bad headache, the pill was Aspirin and might have cured your hangover. Rough night, huh?")
+            game_over("You die of bad headache, the pill was Aspirin and might have cured \nyour hangover. Rough night, huh?")
         elif choice == "keep" and not creature_moved:
-            game_over("You realize that the creature is your girl. Your hungover girlfriend breaks up with you because of your selfishness.")
+            game_over("You realize that the creature is your girl. Your hungover girlfriend \nbreaks up with you because of your selfishness.")
         elif choice == "fake compliments" and not creature_moved:
-            print "The creature aka your wasted girlfriend with wasted make up all over her \nface feels flattered and let's you leave through the door. You only have to \"open door\"."
+            print "The creature aka your wasted girlfriend with wasted make up all over her \nface feels flattered and let's you leave through the door. You only have to \"open door\". Just. Leave. Now."
             creature_moved = True
         elif choice == "fake compliments" and creature_moved:
-            game_over("Your awfully wasted looking girlfriend now gets you are faking compliments and slaps you. That turned out wrong!")
+            game_over("I told you to leave! Your awfully wasted looking girlfriend now gets you are faking compliments \nand slaps you. That turned out wrong!")
         elif choice == "open door" and creature_moved:
             print "Enjoy your hangover breakfast with the butter knife and the Aspirin in your bagpack!"
             free()
@@ -111,7 +114,8 @@ def bottle():
     game_over("You die of alcohol poisoning. It was leftover vodka from last night in the bottle.")
 
 def free():
-    print "You are free now. Get better soon! You really have a fertile hangover imagination, son. Leave the alcohol be next time."
+    print "You are free now. Get better soon! You really have a fertile hangover imagination, son."
+    print "Leave the alcohol be next time."
     exit(0)
 
 def game_over(why):
