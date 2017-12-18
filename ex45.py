@@ -216,3 +216,4 @@ class Map(object):
 a_map = Map('mathroom')
 a_game = Engine(a_map)
 a_game.play()
+
