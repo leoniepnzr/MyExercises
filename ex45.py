@@ -1,14 +1,13 @@
 # -*- coding: utf-8 -*-
 
 from sys import exit
-from random import randint
-import time
-import operator
 from random import randint, shuffle, choice
 from math import sqrt
-
+import time
+import operator
 
 class Scene(object):
+
     def enter(self):
         print "This scene is not yet configured. Subclass it and implement enter()"
         exit(1)
@@ -16,6 +15,7 @@ class Scene(object):
 class Engine(object):
     def __init__(self, scene_map):
         self.scene_map = scene_map
+
     def play(self):
         current_scene = self.scene_map.opening_scene()
         last_scene = self.scene_map.next_scene('finished')
@@ -23,8 +23,6 @@ class Engine(object):
         while current_scene != last_scene:
             next_scene_name = current_scene.enter()
             current_scene = self.scene_map.next_scene(next_scene_name)
-
-        current_scene.enter()
 
 class Trapdoor(Scene):
     quips = [
@@ -43,7 +41,7 @@ class Mathroom(Scene):
         print "Another game, another lonesome house: You find yourself in the middle"
         print "of one big room full of numbers. Numbers on the ceiling, numbers"
         print "on the floor, furniture made out of numbers. What's happening here?"
-        print "May i introduce: The villa of math, or - even better - the villa of death."
+        print "May I introduce: The villa of math, or - even better - the villa of death."
         print "\n"
         print "You are not a math expert? Poor you, this maze will end up deadly for you."
         print "But let's get started first:"
@@ -61,28 +59,29 @@ class Mathroom(Scene):
             return 'trapdoor'
 
         elif action == "2":
-            print "The door closes behind you and happens to be locked. There is"
-            print "no other door. And as you try to find an exit, you notice that"
-            print "the walls are getting closer and closer. They will smash you."
-            print "But there is a small screen that says"
-            print "------ Welcome. Let's play a game *Jigsawstyle* ------"
-            print "Good luck solving the math equations as fast as possible."
-            print "Otherwise you will end up dead."
+            def print_welcome():
+                print "The door closes behind you and happens to be locked. There is"
+                print "no other door. And as you try to find an exit, you notice that"
+                print "the walls are getting closer and closer. They will smash you."
+                print "But there is a small screen that says"
+                print "------ Welcome. Let's play a game *Jigsawstyle* ------"
+                print "Good luck solving the math equations as fast as possible."
+                print "Otherwise you will end up dead."
+                time.sleep(5)
             ### -> bug! will not be executed
-            time.sleep(5)
             start_time = 0
             actual_time = 0
             estimated_time = 0
 
-            problems = []
+            mathproblems = []
 
-            while len(problems) <= 1:
-              problems = [randint(1, n + 1) for n in range(1, randint(1, 9) + 1)]
+            while len(mathproblems) <= 1:
+              mathproblems = [randint(1, n + 1) for n in range(1, randint(1, 9) + 1)]
 
             operations = ["+", "-", "*", "/"]
 
             def randomize_lists():
-              shuffle(problems)
+              shuffle(mathproblems)
 
             def is_number(s):
               try:
@@ -92,18 +91,18 @@ class Mathroom(Scene):
             	return False
 
             def ask_questions(p = []):
-              number_of_questions_asked = 0
+              num_of_questions_asked = 0
               correct_answers = 0
-              minimum_questions_asked = sqrt(len(p))
+              min_questions_asked = sqrt(len(p))
 
-              while len(p) > 1 or correct_answers < minimum_questions_asked:
+              while len(p) > 1 or correct_answers < min_questions_asked:
             	first_number = choice(p)
             	second_number = choice(p)
 
             	operation = choice(operations)
 
             	print "%s %s %s = ?" % (first_number, operation, second_number)
-            	number_of_questions_asked += 1
+            	num_of_questions_asked += 1
 
             	answer = 0
 
@@ -118,18 +117,22 @@ class Mathroom(Scene):
             	else:
             	  answer = operator.mod(first_number, second_number)
 
-            	player_answer = raw_input("> ")
+            	user_answer = raw_input("> ")
 
-            	while not is_number(player_answer):
+                while int(user_answer) is not answer:
+            	  print "That is wrong! Think again!"
+                  user_answer = raw_input("> ")
+
+            	while not is_number(user_answer):
             	  print "That is not a number! Please enter a valid number."
-            	  player_answer = raw_input("> ")
+            	  user_answer = raw_input("> ")
 
-            	if int(player_answer) == answer:
+            	if int(user_answer) == answer:
             	  correct_answers += 1
 
             	p.remove(first_number)
 
-              return number_of_questions_asked
+              return num_of_questions_asked
 
             def play_game():
 
@@ -137,21 +140,24 @@ class Mathroom(Scene):
 
               print_welcome()
               randomize_lists()
-              estimated_time = ask_questions(problems) * 5
+              estimated_time = ask_questions(mathproblems) * 5
               actual_time = time.time() - start_time
 
               print "It took you %r seconds to get that done." % actual_time
-              print "If you got over %r seconds, you would've died." % estimated_time
+              print "If you got over %r seconds, you died." % estimated_time
 
               if actual_time > estimated_time:
             	print "Wow! You are such a lame duck. You can't even solve those easy equations? Shame on you."
                 print "You deserve nothing more than death. The walls are gonna smash you."
+                return 'death'
+
               else:
             	print "You made it! A number 7 with wings is showing up and flies"
                 print "away with you through the ceiling, breaking through a bunch"
                 print "of 8, 5, 4 and 0 and takes you into the math-free freedom."
+                return 'freedom'
 
-            return 'freedom'
+            play_game()
 
         elif action == "84251":
             print "What a strange number, what do you think will be behind this door?"
@@ -160,7 +166,7 @@ class Mathroom(Scene):
             return 'room84251'
 
         else:
-            print "DOES NOT COMPUTE!"
+            print "Type in one of the numbers you are seeing!"
             return 'mathroom'
 
 class Room84251(Scene):
@@ -176,7 +182,7 @@ class Room84251(Scene):
         guesses = 0
 
         while guess != code and guesses < 1:
-            print "Starving death coming towards you, that was wrong!"
+            print "Starving to death awaits you, that was wrong!"
         if guess == code:
             return 'death'
 
@@ -216,4 +222,3 @@ class Map(object):
 a_map = Map('mathroom')
 a_game = Engine(a_map)
 a_game.play()
-
