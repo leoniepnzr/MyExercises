@@ -6,13 +6,19 @@ from math import sqrt
 import time
 import operator
 
-class Scene(object):
+#random shuffle: shuffling list of objects
+#random choice: randomly select item from list
+#randint: returns random integer
+#sqrt: returns "Quadratwurzel" of number
+#operator: standard operators as functions
+
+class Scene(object): #for undefined scenes
 
     def enter(self):
         print "This scene is not yet configured."
         exit(1)
 
-class Engine(object):
+class Engine(object): #game engine, how you move through game
     def __init__(self, scene_map):
         self.scene_map = scene_map
 
@@ -59,7 +65,7 @@ class Mathroom(Scene):
             return 'trapdoor'
 
         elif action == "2":
-            def print_welcome():
+            def print_hello():
                 print "The door closes behind you and happens to be locked. There is"
                 print "no other door. And as you try to find an exit, you notice that"
                 print "the walls are getting closer and closer. They will smash you."
@@ -67,22 +73,27 @@ class Mathroom(Scene):
                 print "------ Welcome. Let's play a game *Jigsawstyle* ------"
                 print "Good luck solving the math equations as fast as possible."
                 print "Otherwise you will end up dead."
-                time.sleep(5)
-            ### -> bug! will not be executed
+                time.sleep(5) #sleeps so that you can read through instructions
+
+            #goal: to quick solve equations, that are chosen randomly with numbers between 1 and 9
+            #start settings - everything at 0 to get it started properly
             start_time = 0
             actual_time = 0
             estimated_time = 0
 
-            mathproblems = []
+            equations = [] #adding a list for possible numbers with randints
 
-            while len(mathproblems) <= 1:
-              mathproblems = [randint(1, n + 1) for n in range(1, randint(1, 9) + 1)]
+            while len(equations) <= 1:
+              equations = [randint(1, n + 1) for n in range(1, randint(1, 9) + 1)]
 
+            #adding list with possible operators
             operations = ["+", "-", "*", "/"]
 
-            def randomize_lists():
-              shuffle(mathproblems)
+            #for random equations, shuffle list of equations
+            def random_lists():
+              shuffle(equations)
 
+            #defining the output to be a float, stored in s, otherwise error
             def is_number(s):
               try:
             	float(s)
@@ -90,6 +101,7 @@ class Mathroom(Scene):
               except ValueError:
             	return False
 
+            #
             def ask_questions(p = []):
               num_of_questions_asked = 0
               correct_answers = 0
@@ -99,13 +111,15 @@ class Mathroom(Scene):
             	first_number = choice(p)
             	second_number = choice(p)
 
-            	operation = choice(operations)
+            	operation = choice(operations) #operation is a random choice out of given operators
 
             	print "%s %s %s = ?" % (first_number, operation, second_number)
             	num_of_questions_asked += 1
 
+                #answers set to zero to start and count onwards
             	answer = 0
 
+                #random operators, what to do with which operator to get correct answer
             	if operation == "+":
             	  answer = operator.add(first_number, second_number)
             	elif operation == "-":
@@ -117,31 +131,34 @@ class Mathroom(Scene):
             	else:
             	  answer = operator.mod(first_number, second_number)
 
-            	user_answer = raw_input("> ")
+            	user_answer = raw_input("> ") #needs input of user to keep going, time runs
 
+                #output for incorrect answers
                 while int(user_answer) is not answer:
             	  print "That is wrong! Think again!"
                   user_answer = raw_input("> ")
 
+                #output for invalid number
             	while not is_number(user_answer):
             	  print "That is not a number! Please enter a valid number."
             	  user_answer = raw_input("> ")
 
+                #counter for correct answers - goes up in every loop
             	if int(user_answer) == answer:
             	  correct_answers += 1
 
-            	p.remove(first_number)
+            	p.remove(first_number) #removes first_number by choice out of list p
 
-              return num_of_questions_asked
+              return num_of_questions_asked #store number of asked questions for time taken after game
 
             def play_game():
 
-              start_time = time.time()
+              start_time = time.time() #start timer
 
-              print_welcome()
-              randomize_lists()
-              estimated_time = ask_questions(mathproblems) * 5
-              actual_time = time.time() - start_time
+              print_hello() #prints function
+              random_lists() #shuffles equations
+              estimated_time = ask_questions(equations) * 5 #gives you 5 seconds of time to get your answer
+              actual_time = time.time() - start_time #equates time you took
 
               print "It took you %r seconds to get that done." % actual_time
               print "If you got over %r seconds, you died." % estimated_time
@@ -157,7 +174,7 @@ class Mathroom(Scene):
                 print "of 8, 5, 4 and 0 and takes you into the math-free freedom."
                 return 'freedom'
 
-            play_game()
+            play_game() #starts game
 
         elif action == "84251":
             print "What a strange number, what do you think will be behind this door?"
