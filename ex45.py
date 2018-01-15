@@ -1,22 +1,7 @@
 # -*- coding: utf-8 -*-
-
 from sys import exit
-from random import randint, shuffle, choice
-from math import sqrt
+from random import randint
 import time
-import operator
-
-#random shuffle: shuffling list of objects
-#random choice: randomly select item from list
-#randint: returns random integer
-#sqrt: returns "Quadratwurzel" of number
-#operator: standard operators as functions
-
-class Scene(object): #for undefined scenes
-
-    def enter(self):
-        print "This scene is not yet configured."
-        exit(1)
 
 class Engine(object): #game engine, how you move through game
     def __init__(self, scene_map):
@@ -29,6 +14,11 @@ class Engine(object): #game engine, how you move through game
         while current_scene != last_scene:
             next_scene_name = current_scene.enter()
             current_scene = self.scene_map.next_scene(next_scene_name)
+
+class Scene(object): #for undefined scenes
+    def enter(self):
+        print "Excuse me?"
+        exit(1)
 
 class Trapdoor(Scene):
     quips = [
@@ -59,122 +49,35 @@ class Mathroom(Scene):
         action = raw_input("> ")
 
         if action == "1":
-            print "Behind the door is a trap door. You fall and end up buried"
-            print "underneath math operators."
-            print ""
+            print "Behind the door is a trap door that looks like a big 0. You fall through and"
+            print "end up buried underneath math operators."
+            print "You died."
             return 'trapdoor'
 
         elif action == "2":
-            def print_hello():
-                print "The door closes behind you and happens to be locked. There is"
-                print "no other door. And as you try to find an exit, you notice that"
-                print "the walls are getting closer and closer. They will smash you."
-                print "But there is a small screen that says"
-                print "------ Welcome. Let's play a game *Jigsawstyle* ------"
-                print "Good luck solving the math equations as fast as possible."
-                print "Otherwise you will end up dead."
-                time.sleep(5) #sleeps so that you can read through instructions
+            print "The door closes behind you and happens to be locked. There is"
+            print "no other door. And as you try to find an exit, you notice that"
+            print "the walls are getting closer and closer. They will smash you."
+            print "But there is a small screen that says"
+            print "------ Welcome. Let's play a game *Jigsawstyle* ------"
+            print "Good luck solving the following math equation."
+            print "If you fail, you will end up dead."
+            time.sleep(5) #sleeps so that you can read through instructions
 
-            #goal: to quick solve equations, that are chosen randomly with numbers between 1 and 9
-            #start settings - everything at 0 to get it started properly
-            start_time = 0
-            actual_time = 0
-            estimated_time = 0
+            def ask_question():
+                print "What is 6 / 2 * 3 + 8 / 2 + 11 - 7?"
+                user_input = raw_input("> ")
+                answer = int(user_input)
 
-            equations = [] #adding a list for possible numbers with randints
+                if answer == 17:
+                    print "True! Good job!"
+                    return 'riddle'
 
-            while len(equations) <= 1:
-              equations = [randint(1, n + 1) for n in range(1, randint(1, 9) + 1)]
+                else:
+                    print "That is wrong! You die!"
+                    exit(1)
 
-            #adding list with possible operators
-            operations = ["+", "-", "*", "/"]
-
-            #for random equations, shuffle list of equations
-            def random_lists():
-              shuffle(equations)
-
-            #defining the output to be a float, stored in s, otherwise error
-            def is_number(n):
-              try:
-            	float(n)
-            	return True
-              except ValueError:
-            	return False
-
-            #starts with question loop
-            def ask_questions(l = []):
-              num_of_questions_asked = 0 #with choice
-              correct_answers = 0
-              min_questions_asked = sqrt(len(l))
-
-              while len(l) > 1 or correct_answers < min_questions_asked:
-            	first_number = choice(l)
-            	second_number = choice(l)
-
-            	operation = choice(operations) #operation is a random choice out of given operators
-
-            	print "%s %s %s = ?" % (first_number, operation, second_number)
-            	num_of_questions_asked += 1
-
-                #answers set to zero to start and count onwards
-            	answer = 0
-
-                #random operators, what to do with which operator to get correct answer
-            	if operation == "+":
-            	  answer = operator.add(first_number, second_number)
-            	elif operation == "-":
-            	  answer = operator.sub(first_number, second_number)
-            	elif operation == "*":
-            	  answer = operator.mul(first_number, second_number)
-            	elif operation == "/":
-            	  answer = operator.div(first_number, second_number)
-            	else:
-            	  answer = operator.mod(first_number, second_number) #modulo
-
-            	user_answer = raw_input("> ") #needs input of user to keep going, time runs
-
-                #output for incorrect answers
-                while int(user_answer) is not answer:
-            	  print "That is wrong! Think again!"
-                  user_answer = raw_input("> ")
-
-                #output for invalid number
-            	while not is_number(user_answer):
-            	  print "That is not a number! Please enter a valid number."
-            	  user_answer = raw_input("> ")
-
-                #counter for correct answers - goes up in every loop
-            	if int(user_answer) == answer:
-            	  correct_answers += 1
-
-            	l.remove(first_number) #removes first_number by choice out of list p
-
-              return num_of_questions_asked #store number of asked questions for time taken after game
-
-            def play_game():
-
-              start_time = time.time() #start timer
-
-              print_hello() #prints function
-              random_lists() #shuffles equations
-              estimated_time = ask_questions(equations) * 5 #gives you 5 seconds of time to get your answer
-              actual_time = time.time() - start_time #equates time you took
-
-              print "It took you %r seconds to get that done." % actual_time
-              print "If you got over %r seconds, you died." % estimated_time
-
-              if actual_time > estimated_time:
-            	print "Wow! You are such a lame duck. You can't even solve those easy equations? Shame on you."
-                print "You deserve nothing more than death. The walls are gonna smash you."
-                return 'death'
-
-              else:
-            	print "You made it! A number 7 with wings is showing up and flies"
-                print "away with you through the ceiling, breaking through a bunch"
-                print "of 8, 5, 4 and 0 and takes you into the math-free freedom."
-                return 'freedom'
-
-            play_game() #starts game
+            ask_question()
 
         elif action == "84251":
             print "What a strange number, what do you think will be behind this door?"
@@ -193,15 +96,31 @@ class Room84251(Scene):
         print "Do you remember?"
         print "If you are wrong, you won't get through and slowly starve to death."
         print "Get it right, otherwise you will not make it!"
-        code = "%d%d%d" % (randint(1,9), randint(1,9), randint(1,9))
+        code = "%d%d%d%d%d" % (randint(1,9), randint(1,9), randint(1,9), randint(1,9), randint(1,9))
         code = ("15248")
         guess = raw_input("[keypad]> ")
-        guesses = 0
 
-        while guess != code and guesses < 1:
-            print "Starving to death awaits you, that was wrong!"
+        if guess != code:
+            print "Starving to death awaits you, that was wrong! Sorry."
+            exit(1)
         if guess == code:
             return 'death'
+
+class Riddle(Scene):
+    def enter(self):
+        print "A pretty number 7 with wings flies through the ceiling and lands right"
+        print "next to your feet. Before you can get on its back, you need to solve a riddle:"
+        print "What three positive numbers give the same result when multiplied and added together?"
+        print "This is your door to freedom - so choose wisely!"
+        answer = "%d, %d, %d" % (randint(1,9), randint(1,9), randint(1,9))
+        answer = ("1, 2, 3")
+        guess = raw_input("[keypad]> ")
+
+        if guess is not answer:
+            print "That was your only chance. The pretty number 7 flies away without you."
+            exit(1)
+        if guess == answer:
+            return 'freedom'
 
 class Freedom(Scene):
     def enter(self):
@@ -222,6 +141,7 @@ class Map(object):
     'mathroom': Mathroom(),
     'trapdoor': Trapdoor(),
     'room84251': Room84251(),
+    'riddle': Riddle(),
     'freedom': Freedom(),
     'death': Death(),
     }
