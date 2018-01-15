@@ -94,22 +94,22 @@ class Mathroom(Scene):
               shuffle(equations)
 
             #defining the output to be a float, stored in s, otherwise error
-            def is_number(s):
+            def is_number(n):
               try:
-            	float(s)
+            	float(n)
             	return True
               except ValueError:
             	return False
 
-            #
-            def ask_questions(p = []):
-              num_of_questions_asked = 0
+            #starts with question loop
+            def ask_questions(l = []):
+              num_of_questions_asked = 0 #with choice
               correct_answers = 0
-              min_questions_asked = sqrt(len(p))
+              min_questions_asked = sqrt(len(l))
 
-              while len(p) > 1 or correct_answers < min_questions_asked:
-            	first_number = choice(p)
-            	second_number = choice(p)
+              while len(l) > 1 or correct_answers < min_questions_asked:
+            	first_number = choice(l)
+            	second_number = choice(l)
 
             	operation = choice(operations) #operation is a random choice out of given operators
 
@@ -129,7 +129,7 @@ class Mathroom(Scene):
             	elif operation == "/":
             	  answer = operator.div(first_number, second_number)
             	else:
-            	  answer = operator.mod(first_number, second_number)
+            	  answer = operator.mod(first_number, second_number) #modulo
 
             	user_answer = raw_input("> ") #needs input of user to keep going, time runs
 
@@ -147,7 +147,7 @@ class Mathroom(Scene):
             	if int(user_answer) == answer:
             	  correct_answers += 1
 
-            	p.remove(first_number) #removes first_number by choice out of list p
+            	l.remove(first_number) #removes first_number by choice out of list p
 
               return num_of_questions_asked #store number of asked questions for time taken after game
 
