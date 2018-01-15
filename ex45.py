@@ -9,7 +9,7 @@ import operator
 class Scene(object):
 
     def enter(self):
-        print "This scene is not yet configured. Subclass it and implement enter()"
+        print "This scene is not yet configured."
         exit(1)
 
 class Engine(object):
@@ -41,7 +41,7 @@ class Mathroom(Scene):
         print "Another game, another lonesome house: You find yourself in the middle"
         print "of one big room full of numbers. Numbers on the ceiling, numbers"
         print "on the floor, furniture made out of numbers. What's happening here?"
-        print "May I introduce: The villa of math, or - even better - the villa of death."
+        print "May I introduce: The Villa Of Math, or - even better - the Villa Of Death."
         print "\n"
         print "You are not a math expert? Poor you, this maze will end up deadly for you."
         print "But let's get started first:"
