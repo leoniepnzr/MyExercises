@@ -63,21 +63,7 @@ class Mathroom(Scene):
             print "Good luck solving the following math equation."
             print "If you fail, you will end up dead."
             time.sleep(5) #sleeps so that you can read through instructions
-
-            def ask_question():
-                print "What is 6 / 2 * 3 + 8 / 2 + 11 - 7?"
-                user_input = raw_input("> ")
-                answer = int(user_input)
-
-                if answer == 17:
-                    print "True! Good job!"
-                    return 'riddle'
-
-                else:
-                    print "That is wrong! You die!"
-                    exit(1)
-
-            ask_question()
+            return 'calculating_screen'
 
         elif action == "84251":
             print "What a strange number, what do you think will be behind this door?"
@@ -114,13 +100,28 @@ class Riddle(Scene):
         print "This is your door to freedom - so choose wisely!"
         answer = "%d, %d, %d" % (randint(1,9), randint(1,9), randint(1,9))
         answer = ("1, 2, 3")
-        guess = raw_input("[keypad]> ")
+        guess = raw_input("[choice]> ")
 
         if guess is not answer:
             print "That was your only chance. The pretty number 7 flies away without you."
             exit(1)
         if guess == answer:
             return 'freedom'
+
+class CalculatingScreen(Scene):
+    def enter(self):
+        print "What is 6 / 2 * 3 + 8 / 2 + 11 - 7?"
+        answer = "%d" % (randint(1,300))
+        answer = ("17")
+        guess = raw_input("> ")
+
+        if guess == answer:
+            print "True! Good job!"
+            return 'riddle'
+
+        if guess is not answer:
+            print "That is wrong! You die!"
+            exit(1)
 
 class Freedom(Scene):
     def enter(self):
@@ -141,6 +142,7 @@ class Map(object):
     'mathroom': Mathroom(),
     'trapdoor': Trapdoor(),
     'room84251': Room84251(),
+    'calculating_screen': CalculatingScreen(),
     'riddle': Riddle(),
     'freedom': Freedom(),
     'death': Death(),
