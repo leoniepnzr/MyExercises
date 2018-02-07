@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block content %}
+
+      <h1>Register</h1>
+      {% if message %}
+        <p>{{ message }}</p>
+        <a href="/login"><input type="button" value="Login"></input></a>
+      {% else %}
+      <form action="/register" method="POST" id="registerform">
+        <br />
+        <br />
+        <label for="username">Username</label><br />
+        <input type="text" name="username" id="username"></input>
+        <br />
+        <br />
+        <label for="password">Password</label><br />
+        <input type="text" name="password" id="password"></input>
+        <br />
+        <br />
+        <input type="submit" value="Register">
+        <a href="/login"><input type="button" value="Login Instead"></input></a>
+      </form>
+
+{% endif %}
+{% endblock %}

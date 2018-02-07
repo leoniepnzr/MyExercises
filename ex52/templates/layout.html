@@ -1,0 +1,114 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Pythonic Game Center</title>
+    <style>
+    html {
+      text-align: center;
+    }
+    .tripadvisor {
+      height: 100%;
+      width: 100%;
+      background-image: url({{url_for('static', filename='love.jpg')}});
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+      animation: trippyAF 2.5s linear infinite;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: -1;
+    }
+    h1 {
+      font-size: 86px;
+      font-family: "Courier New", Courier, monospace;
+      color: white;
+    }
+    content {
+      font-size: 50px;
+      font-family: "Courier New", Courier, monospace;
+      font-weight: bold;
+      color: white;
+    }
+
+    html,body {
+      height: 100%;
+      width: 100%;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-flow: column;
+      position: relative;
+      padding: 20px 0;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+    }
+    label,p,pre {
+      color: #ffffff;
+      white-space: pre-wrap;
+      font-family:'Trebuchet MS','Verdana', sans-serif;
+    }
+
+    input {
+      border-radius: 5px;
+      background-color:white;
+      border: 2px solid #ffffff;
+    }
+    input[type="text"],input[type="password"]{
+      padding: 5px;
+    }
+    input[type="submit"],input[type="button"] {
+      border: 2px solid #EB8D94;
+      background-color: #EB8D94;
+      padding: 5px;
+      color: white;
+      animation: pulse 2s linear infinite;
+      margin-bottom: 10px;
+    }
+    h1 {
+        font-family:'Marker Felt',sans-serif;
+        margin-bottom: 20px;
+    }
+    @keyframes pulse {
+      0% {
+        background-color: #EB8D94;
+        border: 2px solid #EB8D94;}
+      50% {
+        background-color: red;
+        border: 2px solid red;}
+      100% {
+        background-color: #EB8D94;
+        border: 2px solid #EB8D94;}
+    }
+    @keyframes trippyAF {
+      0% {
+          transform: scale(1);
+      }
+      10% {
+        transform: scale(1.01);
+      }
+
+      50% {
+          transform: scale(1.025);
+      }
+      90%{
+        transform: scale(1.01);
+      }
+      100% {
+          transform: scale(1);
+      }
+    }
+
+    </style>
+</head>
+  <body>
+    <div class="tripadvisor"></div>
+      {% block content %}
+      <p>Empty Layout</p>
+      {% endblock %}
+  </body>
+</html>

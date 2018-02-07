@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block content %}
+{% if scene %}
+  <h1>{{ scene.title }}</h1>
+  <p>{{ scene.description }}</p>
+  {% if 'end' in scene.urlname %}
+  <br />
+   <p><a href="/"><input type="button" value="Restart" class="restart"></input></a>
+  {% else %}
+  <br />
+  <form action="/game" method="POST" id="inputform">
+    <label for="userinput">Your input?</label><br><br>
+    <input type="text" name="userinput" id="userinput"></input>
+    <input type="submit">
+  </form>
+  {% endif %}
+  {% if message %}
+    {{ message }}
+  {% endif %}
+{% else %}
+  <p><a href="/"><input type="button" value="Restart" class="restart"></input></a>
+{% endif %}
+<p>Logged in as: {{ session["user"] }}</p>
+<span class="">
+  <a href="/save"><input type="button" value="Save" class="save"></input></a>
+  <a href="/load"><input type="button" value="Load" class="load"></input></a>
+  <a href="/logout"><input type="button" value="Logout" class="logout"></input></a>
+</span>
+{% with messages = get_flashed_messages() %}
+   {% if messages %}
+      {% for message in messages %}
+         <p>{{ message }}</p>
+      {% endfor %}
+   {% endif %}
+{% endwith %}
+{% endblock %}
